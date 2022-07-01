@@ -106,8 +106,8 @@ class ListCard extends HTMLElement {
           try {
             const to = new Function('entity', 'variables', 'configuration', f);
             template = template.replace(from, to(entity, variables, configuration));
-          } catch {
-            template = template.replace(from, 'error');
+          } catch(err) {
+            template = template.replace(from, `error: ${err}`);
           }
         });
       
