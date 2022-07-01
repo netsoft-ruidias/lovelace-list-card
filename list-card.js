@@ -202,7 +202,12 @@ class ListCard extends HTMLElement {
                     console.log(".hasOwnProperty('template')", columns[column].hasOwnProperty('template'));
 
                     if (columns[column].hasOwnProperty('template')) {
-                      console.info("Render Template");
+                      console.error("Render Template");
+
+                      console.log("columns[column].template", columns[column].template);
+                      console.log("feed[entry]", feed[entry]);
+                      console.log("this.config", this.config);
+                      console.log("this.config.entity", this.config.entity);
 
                       newText = this.template(
                         columns[column].template,
@@ -210,6 +215,8 @@ class ListCard extends HTMLElement {
                         this.config,
                         this.config.entity);
                     } else {
+                      console.info("Render Text");
+
                       if (columns[column].hasOwnProperty('regex')) {
                         newText = new RegExp(columns[column].regex).exec(feed[entry][columns[column].field]);
                       }
@@ -220,10 +227,12 @@ class ListCard extends HTMLElement {
                         newText += columns[column].postfix;
                       }
                     }
+
+                    console.info("card_content (+++)", `${newText}`);
+
+                    card_content += `${newText}`;
                   }
 
-                  card_content += `${newText}`;
-                  
                   if (columns[column].hasOwnProperty('add_link')) {
                     card_content +=  `</a>`;
                   }
