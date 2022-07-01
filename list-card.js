@@ -101,10 +101,21 @@ class ListCard extends HTMLElement {
         const regex = /\[\[\[ (.*?) \]\]\]/g;
         const functions = [...template.matchAll(regex)].map(values => values[1]);
   
+        console.log("regex", regex)
+
         functions.forEach(f => {
+          console.log("f", f);
+
           const from = `[[[ ${f} ]]]`;
+
+          console.log("from", from);
+
           try {
             const to = new Function('entity', 'variables', 'configuration', f);
+
+            console.log("to", to);
+            console.log("to return", to(entity, variables, configuration));
+
             template = template.replace(from, to(entity, variables, configuration));
           } catch(err) {
             template = template.replace(from, `error: ${err}`);
