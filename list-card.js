@@ -191,14 +191,18 @@ class ListCard extends HTMLElement {
                     //   card_content += `<paper-button raised>${feed[entry][columns[column].button_text]}</paper-button>`;
                     // }
                   } else {
+                    console.log("start...");
+                    console.log(".field", columns[column].field);
+                    console.log(".value", feed[entry][columns[column].field]);
+
                     let newText = feed[entry][columns[column].field];
 
-                    console.info("newText", newText);
-                    console.info("columns[column]", columns[column]);
-                    console.info(".hasOwnProperty('template')", columns[column].hasOwnProperty('template'));
+                    console.log("newText", newText);
+                    console.log("columns[column]", columns[column]);
+                    console.log(".hasOwnProperty('template')", columns[column].hasOwnProperty('template'));
 
                     if (columns[column].hasOwnProperty('template')) {
-                      console.error("Render Template");
+                      console.info("Render Template");
 
                       newText = this.template(
                         columns[column].template,
@@ -206,8 +210,6 @@ class ListCard extends HTMLElement {
                         this.config,
                         this.config.entity);
                     } else {
-                      console.error("Render Text");
-
                       if (columns[column].hasOwnProperty('regex')) {
                         newText = new RegExp(columns[column].regex).exec(feed[entry][columns[column].field]);
                       }
