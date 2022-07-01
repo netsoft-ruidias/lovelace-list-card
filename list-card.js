@@ -208,8 +208,8 @@ class ListCard extends HTMLElement {
 
                       console.log("columns[column].template", columns[column].template);
                       console.log("feed[entry]", feed[entry]);
-                      console.log("config", config);
-                      console.log("config.entity", config.entity);
+                      //console.log("config", config);
+                      //console.log("config.entity", config.entity);
 
                       newText = this.template(
                         columns[column].template,
