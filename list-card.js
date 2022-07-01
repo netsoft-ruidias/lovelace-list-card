@@ -80,6 +80,8 @@ class ListCard extends HTMLElement {
     this._config = cardConfig;
   }
 
+//[[[ '%.2f' | format(amount) ]]]
+
   set hass(hass) {
     const config = this._config;
     const root = this.shadowRoot;
@@ -94,31 +96,21 @@ class ListCard extends HTMLElement {
 
       const template = (
         template,
-        variables,
+        entry,
         configuration,
         entity,
       ) => {
         const regex = /\[\[\[ (.*?) \]\]\]/g;
         const functions = [...template.matchAll(regex)].map(values => values[1]);
-  
-        console.log("regex", regex)
 
         functions.forEach(f => {
-          console.log("f", f);
-
           const from = `[[[ ${f} ]]]`;
-
-          console.log("from", from);
-
           try {
-            const to = new Function('entity', 'variables', 'configuration', f);
-
-            console.log("to", to);
-            console.log("to return", to(entity, variables, configuration));
-
-            template = template.replace(from, to(entity, variables, configuration));
+            const to = new Function('entity', 'entry', 'configuration', f);
+            template = template.replace(from, to(entity, entry, configuration));
           } catch(err) {
-            template = template.replace(from, `error: ${err}`);
+            console.error(err);
+            template = template.replace(from, 'error');
           }
         });
       
@@ -202,26 +194,9 @@ class ListCard extends HTMLElement {
                     //   card_content += `<paper-button raised>${feed[entry][columns[column].button_text]}</paper-button>`;
                     // }
                   } else {
-                    console.log(
-                      "start...", 
-                      "[", columns[column].field, "]", 
-                      feed[entry][columns[column].field]);
-
                     let newText = feed[entry][columns[column].field];
                     
-                    console.log(
-                      "columns[column]", 
-                      columns[column],
-                      columns[column].hasOwnProperty('template'));
-
                     if (columns[column].hasOwnProperty('template')) {
-                      console.error("Render Template");
-
-                      console.log("columns[column].template", columns[column].template);
-                      console.log("feed[entry]", feed[entry]);
-                      console.log("config", config);
-                      //console.log("config.entity", config.entity);
-
                       newText = template(
                         columns[column].template,
                         feed[entry],
