@@ -85,34 +85,34 @@ class ListCard extends HTMLElement {
     const root = this.shadowRoot;
     const card = root.lastChild;
 
-    const template = (
-      template,
-      variables,
-      configuration,
-      entity,
-    ) => {
-      const regex = /\[\[\[ (.*?) \]\]\]/g;
-      const functions = [...template.matchAll(regex)].map(values => values[1]);
-
-      functions.forEach(f => {
-        const from = `[[[ ${f} ]]]`;
-        try {
-          const to = new Function('entity', 'variables', 'configuration', f);
-          template = template.replace(from, to(entity, variables, configuration));
-        } catch {
-          template = template.replace(from, 'error');
-        }
-      });
-    
-      return template;        
-    }
-
     if (hass.states[config.entity]) {
       const feed = config.feed_attribute ? hass.states[config.entity].attributes[config.feed_attribute] : hass.states[config.entity].attributes;
       const columns = config.columns;
       this.style.display = 'block';
       const rowLimit = config.row_limit ? config.row_limit : Object.keys(feed).length;
       let rows = 0;
+
+      const template = (
+        template,
+        variables,
+        configuration,
+        entity,
+      ) => {
+        const regex = /\[\[\[ (.*?) \]\]\]/g;
+        const functions = [...template.matchAll(regex)].map(values => values[1]);
+  
+        functions.forEach(f => {
+          const from = `[[[ ${f} ]]]`;
+          try {
+            const to = new Function('entity', 'variables', 'configuration', f);
+            template = template.replace(from, to(entity, variables, configuration));
+          } catch {
+            template = template.replace(from, 'error');
+          }
+        });
+      
+        return template;        
+      }
 
       if (feed !== undefined && Object.keys(feed).length > 0) {
         let card_content = '<table><thread><tr>';
@@ -211,7 +211,7 @@ class ListCard extends HTMLElement {
                       //console.log("config", config);
                       //console.log("config.entity", config.entity);
 
-                      newText = this.template(
+                      newText = template(
                         columns[column].template,
                         feed[entry],
                         config,
