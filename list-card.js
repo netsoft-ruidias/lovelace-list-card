@@ -207,7 +207,7 @@ class ListCard extends HTMLElement {
                     } else {
                       if (columns[column].hasOwnProperty('regex')) {
                         newText = new RegExp(columns[column].regex, 'u').exec(feed[entry][columns[column].field]);
-                      }
+                      } 
                       if (columns[column].hasOwnProperty('prefix')) {
                         newText = columns[column].prefix + newText;
                       } 
@@ -251,7 +251,7 @@ class ListCard extends HTMLElement {
   }
 }
 
-customElements.define('list-card', ListCard);
+  customElements.define('list-card', ListCard);
 
 window.customCards = window.customCards || [];
 window.customCards.push({
