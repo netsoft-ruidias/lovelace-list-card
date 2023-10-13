@@ -1,3 +1,5 @@
+console.log(`%clist-card\n%cVersion: ${'0.0.1'}`, 'color: rebeccapurple; font-weight: bold;', '');
+
 class ListCard extends HTMLElement {
 
   constructor() {
@@ -204,7 +206,7 @@ class ListCard extends HTMLElement {
                         config.entity);
                     } else {
                       if (columns[column].hasOwnProperty('regex')) {
-                        newText = new RegExp(columns[column].regex).exec(feed[entry][columns[column].field]);
+                        newText = new RegExp(columns[column].regex, 'u').exec(feed[entry][columns[column].field]);
                       }
                       if (columns[column].hasOwnProperty('prefix')) {
                         newText = columns[column].prefix + newText;
@@ -250,3 +252,11 @@ class ListCard extends HTMLElement {
 }
 
 customElements.define('list-card', ListCard);
+
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: "list-card",
+  name: "List Card",
+  preview: false,
+  description: "The List Card generate table with data from sensor that provides data as a list of attributes."
+});
